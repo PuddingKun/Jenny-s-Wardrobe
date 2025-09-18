@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - Jenny’s Wardrobe</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: #fafafa;
+        color: #333;
+        overflow-x: hidden;
+    }
+
+    /* ✅ Top Bar */
+    .top-bar {
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      border-bottom: 1px solid #eee;
+    }
+    .logo { font-size: 24px; font-weight: bold; }
+    .black-text { color: black; }
+    .pink-text { color: #df567c; }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 20px;
+      color: #333;
+    }
+    .nav-icons i { cursor: pointer; transition: transform 0.2s ease; }
+    .nav-icons i:hover { transform: scale(1.2); color: #df567c; }
+    .hamburger { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
+
+    .nav-bar {
+      background-color: #fef0e0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 10px 0;
+      font-size: 17px;
+    }
+    .nav-bar a { text-decoration: none; color: black; transition: color 0.2s ease; }
+    .nav-bar a:hover { color: #e08d00; }
+
+   /* ✅ Cart Styling */
+.cart-container { 
+  max-width: 900px; 
+  margin: 30px auto; 
+  background: #fff; 
+  padding: 25px; 
+  border-radius: 16px; 
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08); 
+}
+.cart-title { 
+  font-size: 26px; 
+  margin-bottom: 25px; 
+  text-align: center; 
+  color: #df567c; 
+  font-weight: 600; 
+}
+.cart-item { 
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  border-bottom: 1px solid #eee; 
+  padding-bottom: 15px; 
+  gap: 15px;
+}
+.cart-item img { 
+  width: 90px; 
+  height: 90px; 
+  border-radius: 10px; 
+  object-fit: cover; 
+}
+.cart-item-details { flex: 1; }
+.cart-item-details h3 { margin: 0; font-size: 18px; font-weight: 600; }
+.cart-item-details p { margin: 4px 0; color: #666; font-size: 14px; }
+
+/* ✅ Quantity stepper polished */
+.quantity-control { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.quantity-control button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #df567c;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.2s, transform 0.2s;
+}
+.quantity-control button:hover { background: #c54b6b; transform: scale(1.1); }
+.quantity-control input {
+  width: 55px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 15px;
+}
+
+/* ✅ Remove Button */
+.remove-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.remove-btn:hover { background: #d9363e; }
+
+/* ✅ Cart total + checkout */
+.cart-summary { 
+  text-align: right; 
+  margin-top: 25px; 
+  font-size: 18px;
+}
+.cart-summary h3 { font-weight: 600; }
+.checkout-btn {
+  background: #df567c;
+  color: white;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+}
+.checkout-btn:hover { background: #c54b6b; transform: translateY(-2px); }
+
+/* ✅ Responsive for mobile */
+@media (max-width: 600px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cart-item img {
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    margin-bottom: 10px;
+  }
+  .quantity-control {
+    justify-content: flex-start;
+  }
+  .remove-btn {
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .cart-summary {
+    text-align: center;
+  }
+  .checkout-btn {
+    width: 100%;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  .nav-bar a {
+    text-align: center;
+    font-size: 15px;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Top Bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <span class="pink-text">Jenny’s</span>
+      <span class="black-text">Wardrobe</span>
+    </div>
+    <div class="nav-icons">
+      <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+      <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+
+  <!-- ✅ Navbar -->
+  <div class="nav-bar">
+    <a href="index.html">Home</a>
+    <a href="blouse.htm">Blouses</a>
+    <a href="#">Women</a>
+    <a href="#">About Us</a>
+    <a href="sale.html">Sale</a>
+    <a href="#">Contact Us</a>
+  </div>
+
+  <!-- ✅ Cart Container -->
+  <div class="cart-container">
+    <h2 class="cart-title">Your Cart</h2>
+    <div id="cartItems"></div>
+    <div class="cart-summary">
+      <h3>Total: ₹<span id="cartTotal">0</span></h3>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    // Helper to clean price → number only
+    function parsePrice(price) {
+      return Number(String(price).replace(/[^0-9.-]+/g,""));
+    }
+
+    // Load cart from localStorage
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let cartItems = document.getElementById("cartItems");
+      let cartTotal = document.getElementById("cartTotal");
+      cartItems.innerHTML = "";
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        let price = parsePrice(item.price);
+        total += price * item.qty;
+        cartItems.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-details">
+              <h3>${item.name}</h3>
+              <p>${item.description || ""}</p>
+              <p>₹${price}</p>
+              <div class="quantity-control">
+                <button onclick="updateQty(${index}, -1)">−</button>
+                <input type="number" value="${item.qty}" min="1" onchange="changeQty(${index}, this.value)">
+                <button onclick="updateQty(${index}, 1)">+</button>
+              </div>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+      });
+
+      cartTotal.textContent = total.toLocaleString("en-IN");
+    }
+
+    // Update quantity with +/- buttons
+    function updateQty(index, change) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart[index].qty = Math.max(1, cart[index].qty + change);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+
+    // Change qty manually
+    function changeQty(index, value) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart[index].qty = Math.max(1, parseInt(value) || 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+
+    // Remove item
+    function removeItem(index) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+
+    // Checkout (redirect to form page later)
+    function checkout() {
+      window.location.href = "checkout.html";
+    }
+
+    // On page load
+    loadCart();
+  </script>
+</body>
+</html>
