@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Jenny's Wardrobes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Georgia', serif;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      .offer-banner {
+        background-color: #f8d660;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        height: 28px;
+        display: flex;
+        align-items: center;
+      }
+      .offer-banner span {
+        display: inline-block;
+        padding-left: 100%;
+        font-size: 15px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        animation: scrollText 15s linear infinite;
+        color: #000;
+      }
+      @keyframes scrollText {
+        0% { transform: translateX(-100%);}
+        100% { transform: translateX(100%);}
+      }
+
+      .top-bar {
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 25px;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        font-family: 'Georgia', serif;
+      }
+      .black-text { color: black; }
+      .pink-text { color: #df567c; }
+
+      .icons {
+        display: flex;
+        gap: 18px;
+        font-size: 20px;
+        color: #333;
+      }
+      .icons i {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .icons i:hover {
+        transform: scale(1.2);
+        color: #555;
+      }
+
+      .nav-bar {
+        background-color: #fef0e0;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        padding: 10px 0;
+        font-size: 17px;
+      }
+      .nav-bar a {
+        text-decoration: none;
+        color: black;
+        transition: color 0.2s ease;
+      }
+      .nav-bar a:hover {
+        color: #e08d00;
+      }
+
+      .banner-1 img, .banner-2 img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        max-height: 600px;
+      }
+
+      .category-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        padding: 40px 20px;
+        flex-wrap: wrap;
+        background-color: #fff;
+      }
+      .category {
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        font-family: 'Georgia', serif;
+        transition: transform 0.3s ease;
+      }
+      .category:hover { transform: scale(1.05); }
+      .category img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #d19a9a;
+        transition: transform 0.3s ease;
+      }
+      .category p {
+        margin-top: 10px;
+        font-size: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .category-section {
+          gap: 20px;
+          padding: 20px 10px;
+        }
+        .category img {
+          width: 90px;
+          height: 90px;
+        }
+        .category p {
+          font-size: 0.9rem;
+        }
+      }
+
+      .bestseller {
+        text-align: center;
+        padding: 50px 20px;
+      }
+      .bestseller h2 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        font-family: 'Georgia', serif;
+      }
+      .bestseller-products {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        justify-items: center;
+      }
+      .product {
+        text-align: center;
+        max-width: 240px;
+      }
+      .product img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+      }
+      .product button {
+        display: block;
+        margin: 12px auto 0;
+        padding: 8px 16px;
+        background-color: #f5f5f5;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+      }
+      .product button:hover {
+        background-color: #df567c;
+        color: white;
+      }
+
+      .limited-offer {
+        text-align: center;
+        padding: 50px 20px;
+      }
+      .limited-offer h2 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        font-family: 'Georgia', serif;
+      }
+      .offer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+      }
+      .offer-item {
+        text-align: center;
+      }
+      .offer-item img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .offer-item p {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        font-family: 'Georgia', serif;
+      }
+
+      /* --- Mobile fixes at the very end --- */
+      @media (max-width: 768px) {
+        .top-bar {
+          padding: 10px 15px;
+        }
+        .logo {
+          font-size: 18px;
+        }
+        .icons {
+          gap: 12px;
+          font-size: 18px;
+        }
+        .nav-bar {
+          gap: 10px;
+          font-size: 14px;
+          padding: 8px 0;
+          flex-wrap: wrap; /* allows wrapping, prevents overflow */
+        }
+        .offer-banner span {
+          padding-left: 50%; /* stops overflow */
+        }
+        .category-section {
+          gap: 15px;
+          padding: 15px 5px;
+        }
+        .category img {
+          width: 80px;
+          height: 80px;
+        }
+        .category p {
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="homepage">
+
+    <!-- Animated Offer Banner -->
+    <div class="offer-banner">
+      <span>✨ Special Offers Available – Shop Now! ✨</span>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="logo">
+        <span class="pink-text">Jenny’s</span>
+        <span class="black-text">Wardrobe</span>
+      </div>
+      <div class="icons">
+        <i class="fas fa-search"></i>
+        <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+        <a href="admin.html"><i class="fas fa-user"></i></a>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+      <a href="blouses.htm">Women</a>
+      <a href="#">About Us</a>
+      <a href="sale.html">Sale</a>
+      <a href="#">Contact Us</a>
+    </div>
+
+    <div class="banner banner-1">
+      <img src="Project 337/Thumbnail1.png" alt="Banner 1">
+    </div>
+
+    <section class="category-section">
+      <a href="blouses.htm" class="category">
+        <img src="Project 337/Blouse.jpg" alt="Blouses">
+        <p>Blouses</p>
+      </a>
+      <a href="#sarees" class="category">
+        <img src="Project 337/Saree.jpg" alt="Sarees">
+        <p>Sarees</p>
+      </a>
+      <a href="#dresse" class="category">
+        <img src="Project 337/Dress.jpg" alt="Dresses">
+        <p>Dresses</p>
+      </a>
+    </section>
+
+    <div class="banner banner-2">
+      <img src="Project 337/Thumbnail2.jpg" alt="Banner 2">
+    </div>
+
+    <!-- BestSeller Section -->
+    <section class="bestseller">
+      <h2>— Our BestSeller —</h2>
+      <div class="bestseller-products">
+        <div class="product">
+          <img src="Project 337/example 2.jpg" alt="Silk Saree">
+          <p>Silk Saree — ₹2,499</p>
+          <button>CHECK OUT</button>
+        </div>
+        <div class="product">
+          <img src="Project 337/example 2.jpg" alt="Floral Dress">
+          <p>Floral Dress — ₹1,799</p>
+          <button>CHECK OUT</button>
+        </div>
+        <div class="product">
+          <img src="Project 337/example 2.jpg" alt="Designer Blouse">
+          <p>Designer Blouse — ₹999</p>
+          <button>CHECK OUT</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Limited Time Offer Section -->
+    <section class="limited-offer">
+      <h2>Limited Time Offer</h2>
+      <div class="offer-grid">
+        <div class="offer-item">
+          <img src="Project 337/example 2.jpg" alt="Embroidered Kurti">
+          <p>Embroidered Kurti — ₹1,299</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS2.jpg" alt="Party Wear Gown">
+          <p>Party Wear Gown — ₹3,499</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS3.jpg" alt="Handloom Saree">
+          <p>Handloom Saree — ₹2,199</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS3.jpg" alt="Handloom Saree">
+          <p>Handloom Saree — ₹2,199</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS3.jpg" alt="Handloom Saree">
+          <p>Handloom Saree — ₹2,199</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS3.jpg" alt="Handloom Saree">
+          <p>Handloom Saree — ₹2,199</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS2.jpg" alt="Party Wear Gown">
+          <p>Party Wear Gown — ₹3,499</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS2.jpg" alt="Party Wear Gown">
+          <p>Party Wear Gown — ₹3,499</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS2.jpg" alt="Party Wear Gown">
+          <p>Party Wear Gown — ₹3,499</p>
+        </div>
+        <div class="offer-item">
+          <img src="Project 337/BS2.jpg" alt="Party Wear Gown">
+          <p>Party Wear Gown — ₹3,499</p>
+        </div
+      </div>
+     
+    </section>
+
+  </body>
+</html>
