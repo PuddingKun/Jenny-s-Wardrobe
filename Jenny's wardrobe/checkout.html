@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Jenny’s Wardrobe</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #fafafa; margin: 0; color: #333; }
+    .checkout-container { max-width: 700px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    h2 { text-align: center; color: #df567c; margin-bottom: 25px; }
+    form { display: flex; flex-direction: column; gap: 18px; }
+    label { font-weight: 600; }
+    input, textarea, select { padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 15px; width: 100%; }
+    textarea { resize: vertical; }
+    .cart-summary { background: #fdf0eb; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+    .cart-summary h3 { margin-top: 0; color: #df567c; }
+    .cart-summary ul { list-style: none; padding-left: 0; }
+    .cart-summary li { margin-bottom: 8px; }
+    button { background: #df567c; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #c54b6b; }
+
+    @keyframes popupAnim {
+  0% { transform: scale(0.5); opacity:0; }
+  100% { transform: scale(1); opacity:1; }
+}
+#popupOkBtn:hover { background:#c54b6b; }
+    
+  </style>
+</head>
+<body>
+
+<div class="checkout-container">
+  <h2>Checkout</h2>
+  
+  <!-- Cart Summary -->
+  <div class="cart-summary">
+    <h3>Your Order</h3>
+    <ul id="orderList"></ul>
+    <p>Total: ₹<span id="orderTotal">0</span></p>
+  </div>
+
+  <!-- Formspree Form -->
+  <form id="checkoutForm" action="https://formspree.io/f/mgvlgnay" method="POST">
+    <label for="name">Full Name *</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">Phone Number *</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="email">Email (optional)</label>
+    <input type="email" id="email" name="email">
+
+    <label for="address">Address *</label>
+    <textarea id="address" name="address" rows="3" required></textarea>
+
+    <label for="payment">Payment Option *</label>
+    <select id="payment" name="payment" required>
+      <option value="">Select</option>
+      <option value="Cash">Cash</option>
+      <option value="UPI">UPI</option>
+    </select>
+
+    <!-- Hidden input to send cart details -->
+    <input type="hidden" id="cartData" name="cartData">
+
+    <button type="submit">Place Order</button>
+  </form>
+</div>
+
+<!-- Order Success Popup -->
+<div id="successPopup" style="
+  display:none;
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+">
+  <div style="
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: popupAnim 0.4s ease-out;
+  ">
+    <i class="fas fa-check-circle" style="font-size:50px; color:#df567c; margin-bottom:15px;"></i>
+    <h2 style="margin-bottom:10px; color:#333;">Order Placed!</h2>
+    <p style="margin-bottom:20px; color:#555;">Your order has been successfully placed. Thank you for shopping with Jenny’s Wardrobe!</p>
+    <button id="popupOkBtn" style="
+      background:#df567c;
+      color:white;
+      padding:12px 25px;
+      border:none;
+      border-radius:10px;
+      font-size:16px;
+      cursor:pointer;
+      transition:background 0.2s;
+    ">OK</button>
+  </div>
+</div>
+
+
+<<script>
+        // Load cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderList = document.getElementById('orderList');
+        const orderTotal = document.getElementById('orderTotal');
+        const cartDataInput = document.getElementById('cartData');
+      
+        let total = 0;
+        let cartText = '';
+      
+        cart.forEach(item => {
+          const itemPrice = parseFloat(item.price.replace(/[^0-9.-]+/g,""));
+          const itemTotal = itemPrice * item.qty;
+          total += itemTotal;
+      
+          orderList.innerHTML += `<li>${item.name} × ${item.qty} - ₹${itemTotal.toLocaleString('en-IN')}</li>`;
+          cartText += `${item.name} x ${item.qty} = ₹${itemTotal.toLocaleString('en-IN')}\n`;
+        });
+      
+        orderTotal.textContent = total.toLocaleString('en-IN');
+        cartText += `Total: ₹${total.toLocaleString('en-IN')}`;
+        cartDataInput.value = cartText;
+      
+        // Popup element and OK button
+        const popup = document.getElementById('successPopup');
+        const popupOkBtn = document.getElementById('popupOkBtn');
+      
+        // Attach click listener once
+        popupOkBtn.addEventListener('click', () => {
+          popup.style.display = 'none';
+          window.location.href = "index.html"; // redirect to homepage
+        });
+      
+        // Handle form submission
+        const form = document.getElementById('checkoutForm');
+        const submitBtn = form.querySelector('button[type="submit"]');
+      
+        form.addEventListener('submit', function(event) {
+          event.preventDefault(); // prevent default submission
+      
+          // Disable submit to prevent double submission
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Placing Order...";
+      
+          const data = new FormData(form);
+      
+          fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          }).then(response => {
+            if (response.ok) {
+              // Show custom popup
+              popup.style.display = 'flex';
+      
+              // Clear the cart
+              localStorage.removeItem('cart');
+      
+              // Reset submit button (optional if you want)
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Place Order";
+      
+            } else {
+              alert("There was a problem submitting your order. Please try again.");
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Place Order";
+            }
+          }).catch(error => {
+            alert("There was a problem submitting your order. Please try again.");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Place Order";
+          });
+        });
+      </script>
+      
+      
+</body>
+</html>

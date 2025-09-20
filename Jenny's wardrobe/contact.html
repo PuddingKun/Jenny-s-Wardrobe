@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Jenny’s Wardrobe</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #fafafa;
+      color: #333;
+    }
+
+    /* ✅ Top Bar */
+    .top-bar {
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      border-bottom: 1px solid #eee;
+    }
+    .logo { font-size: 24px; font-weight: bold; }
+    .black-text { color: black; }
+    .pink-text { color: #df567c; }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 20px;
+      color: #333;
+    }
+    .nav-icons i { cursor: pointer; transition: transform 0.2s ease; }
+    .nav-icons i:hover { transform: scale(1.2); color: #df567c; }
+    .hamburger { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
+
+    /* ✅ Navbar */
+    .nav-bar {
+      background-color: #fef0e0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 10px 0;
+      font-size: 17px;
+    }
+    .nav-bar a { text-decoration: none; color: black; transition: color 0.2s ease; }
+    .nav-bar a:hover { color: #e08d00; }
+
+    /* ✅ Contact Form Styling */
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 25px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #df567c;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #df567c;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      background: #df567c;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #c54b6b;
+      transform: translateY(-2px);
+    }
+
+    .info {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* ✅ Responsive */
+    @media (max-width: 600px) {
+      .nav-bar { flex-wrap: wrap; gap: 15px; }
+      .container { margin: 20px; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Top Bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <span class="pink-text">Jenny’s</span>
+      <span class="black-text">Wardrobe</span>
+    </div>
+    <div class="nav-icons">
+      <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+      <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+
+  <!-- ✅ Navbar -->
+  <div class="nav-bar">
+    <a href="index.html">Home</a>
+    <a href="blouse.html">Blouses</a>
+    <a href="about.html">About Us</a>
+    <a href="sale.html">Sale</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+
+  <!-- ✅ Contact Form -->
+  <div class="container">
+    <h2>Contact Us</h2>
+    <form action="https://formspree.io/f/xyzdrnng" method="POST">
+      <div>
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div>
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="_replyto" required />
+      </div>
+      <div>
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" required />
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit">Send Message</button>
+    </form>
+    <div class="info">
+      <p>You can also reach us at: <strong>shreedeeppatra48@gmail.com</strong></p>
+    </div>
+  </div>
+
+</body>
+</html>
