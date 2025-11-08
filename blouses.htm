@@ -3,20 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Blouses - Jenny's Wardrobes</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Georgia', serif;
-      overflow-x: hidden;
-      background: #fafafa;
-      color: #333;
-    }
+    /* ---------------- basic/reset ---------------- */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: 'Georgia', serif; background: #fafafa; color: #333; -webkit-font-smoothing:antialiased; }
+    a { color: inherit; text-decoration: none; }
 
-    /* Top Bar */
+    /* ---------------- top bar / nav ---------------- */
     .top-bar {
       background-color: white;
       display: flex;
@@ -29,20 +24,12 @@
     .black-text { color: black; }
     .pink-text { color: #df567c; }
 
-    .nav-icons {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 20px;
-      color: #333;
-    }
+    .nav-icons { display: flex; align-items: center; gap: 18px; font-size: 20px; color: #333; }
     .nav-icons i { cursor: pointer; transition: transform 0.2s ease; }
     .nav-icons i:hover { transform: scale(1.2); color: #555; }
 
-    /* Hamburger (Mobile only) */
     .hamburger { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
 
-    /* Navigation */
     .nav-bar {
       background-color: #fef0e0;
       display: flex;
@@ -51,46 +38,15 @@
       padding: 10px 0;
       font-size: 17px;
     }
-    .nav-bar a {
-      text-decoration: none; color: black; transition: color 0.2s ease;
-    }
-    .nav-bar a:hover { color: #e08d00; }
 
-    /* Mobile Menu */
-    .mobile-menu {
-      display: none; 
-      flex-direction: column; 
-      background-color: #fef0e0; 
-      padding: 15px;
-    }
-    .mobile-menu a {
-      text-decoration: none; 
-      color: black; 
-      padding: 10px 0; 
-      border-bottom: 1px solid #ddd;
-    }
-    .mobile-menu a:hover { color: #e08d00; }
-    .mobile-menu .extra {
-      display: flex;
-      flex-direction: column;
-      padding-top: 10px;
-      gap: 10px;
-    }
-    .mobile-menu .extra a {
-      border: none;
-      font-size: 15px;
-    }
+    .mobile-menu { display: none; flex-direction: column; background-color: #fef0e0; padding: 15px; }
+    .mobile-menu .extra { display:flex; flex-direction:column; padding-top:10px; gap:10px; }
 
-    /* Search */
-    .search-section {
-      text-align: center; padding: 15px; background: #fff; border-bottom: 1px solid #eee;
-    }
-    .search-section input {
-      padding: 6px 12px; width: 60%; max-width: 300px;
-      border: 1px solid #ccc; border-radius: 20px; font-size: 14px; outline: none;
-    }
+    /* ---------------- search ---------------- */
+    .search-section { text-align: center; padding: 15px; background: #fff; border-bottom: 1px solid #eee; }
+    .search-section input { padding: 6px 12px; width: 60%; max-width: 300px; border: 1px solid #ccc; border-radius: 20px; font-size: 14px; outline: none; }
 
-    /* Products Grid */
+    /* ---------------- product grid ---------------- */
     .blouse-products {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -105,310 +61,170 @@
       padding: 10px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .product:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    }
-    .product img {
-      width: 100%;
-      aspect-ratio: 4/5;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product p {
-      margin-top: 6px;
-      font-size: 0.9rem;
-    }
+    .product:hover { transform: translateY(-4px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+    .product img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 8px; }
+    .product p { margin-top: 6px; font-size: 0.9rem; }
 
-    /* Modal */
+    /* ---------------- modal (fixed & repro-friendly) ----------------
+       This is the modal CSS that fixes iPhone Safari clipping and keeps
+       the image area larger (as requested). Replace previous modal rules.
+    ------------------------------------------------------------------*/
     .modal {
-      display: none;
       position: fixed;
-      z-index: 999;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.6);
+      display: none;                /* toggled by JS */
+      z-index: 9999;
+      background: rgba(0,0,0,0.45);
+      -webkit-overflow-scrolling: touch;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: env(safe-area-inset-top,18px) env(safe-area-inset-right,18px) env(safe-area-inset-bottom,18px) env(safe-area-inset-left,18px);
     }
 
     .modal-content {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  width: 90%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  position: relative;
+      width: 92%;
+      max-width: 520px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+      overflow: hidden;            /* keeps rounded corners */
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      max-height: calc(100vh - (env(safe-area-inset-top,18px) + env(safe-area-inset-bottom,18px) + 40px));
+    }
 
-  /* ✅ Ensures the whole modal fits on screen */
+    /* === BIG IMAGE AREA === */
+    .modal-image {
+      position: relative;
+      width: 100%;
+      /* make image taller so it dominates modal top */
+      height: 36vh;          /* responsive; scales with viewport height */
+      max-height: 360px;     /* cap for large screens */
+      min-height: 220px;     /* ensure it's tall enough on small phones */
+      overflow: hidden;
+      background: #eee;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      flex: 0 0 auto;
+    }
 
+    /* image track and slides */
+    .image-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.38s ease;
+    }
+    .image-track img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;      /* fill area while preserving aspect */
+      display: block;
+      flex-shrink: 0;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
 
-  /* ✅ Keep the ratio unless screen is too short */
-  aspect-ratio: 4 / 5;
-}
-
-
-/* ✅ Image */
-.modal-content img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* ✅ Title */
-.modal-details h2 {
-  margin: 0.5rem 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #df567c;
-}
-
-/* ✅ Price */
-.modal-details .price {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 0.8rem;
-}
-
-/* ✅ Qty */
-.qty-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 1rem 0;
-}
-
-.qty-wrapper label {
-  font-weight: 500;
-}
-
-.qty-wrapper input {
-  width: 60px;
-  padding: 6px 10px;
-  font-size: 1rem;
-  border-radius: 20px;
-  border: none;
-  background: #fce9ec;
-  text-align: center;
-  color: #d46a88;
-  box-shadow: inset 0 0 4px rgba(0,0,0,0.1);
-}
-
-/* ✅ Buttons */
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.modal-actions button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.add-cart { background: #f5f5f5; }
-.add-cart:hover { background: #e0e0e0; }
-.buy-now { background: #df567c; color: #fff; }
-.buy-now:hover { background: #c54b6b; }
-
-/* Close button */
-.close {
-  position: absolute;
-  top: 12px;
-  right: 20px;
-  font-size: 2rem;              /* bigger */
-  font-weight: bold;            /* thicker */
-  color: #000000;                  /* white for visibility */
-  cursor: pointer;
-  z-index: 10;
-}
-.close:hover {
-  color: #df567c;               /* match theme pink on hover */
-  text-shadow: 0 0 8px rgba(0,0,0,0.8);
-}
-
-    .modal-actions button {
-      flex: 1;
-      padding: 10px;
+    /* arrows overlayed on the image (visible, circular) */
+    .modal-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.96);
       border: none;
-      border-radius: 25px;
-      font-size: 15px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 20px;
       cursor: pointer;
-      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+      z-index: 8;
     }
-    .buy-now { background: #df567c; color: #fff; }
-    .buy-now:hover { background: #c54b6b; }
-    .add-cart { background: #f5f5f5; }
-    .add-cart:hover { background: #e0e0e0; }
+    .modal-arrow.left { left: 12px; }
+    .modal-arrow.right { right: 12px; }
+    .modal-arrow:hover { color: #df567c; }
 
-    /* Mobile Responsive */
-    @media (max-width: 1024px) {
-      .blouse-products {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    /* close button (keeps it on top-right of image area) */
+    .close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      background: rgba(255,255,255,0.95);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
     }
+
+    /* details area */
+    .modal-details {
+      padding: 18px 26px 6px 26px;
+      text-align: center;
+      overflow: auto;
+    }
+    .modal-details h2 {
+      margin: 8px 0 6px;
+      font-size: 1.32rem;
+      color: #df567c;
+      font-weight: 700;
+    }
+    .modal-details .price {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      color: #222;
+    }
+    .modal-details .description {
+      color: #555;
+      font-size: 0.98rem;
+      line-height: 1.55;
+      margin: 6px auto 12px;
+      max-width: 86%;
+    }
+
+    /* qty + actions */
+    .qty-wrapper { display:flex; align-items:center; justify-content:center; gap:10px; padding:6px 0 8px; }
+    .qty-wrapper label { font-size: 0.98rem; color: #333; }
+    .qty-wrapper input {
+      width: 48px; border-radius: 18px; border: none;
+      background: #fdeef1; color: #d46a88; padding: 6px; text-align: center;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.06);
+    }
+
+    .modal-actions { display:flex; gap:14px; padding:16px 22px 22px; justify-content:space-between; align-items:center; }
+    .modal-actions .add-cart, .modal-actions .buy-now {
+      flex: 1; padding: 12px 14px; border-radius: 999px; border: none; font-weight:700; cursor:pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+    .modal-actions .add-cart { background: #fafafa; color: #111; margin-right: 8px; }
+    .modal-actions .buy-now { background: #df567c; color: #fff; }
+
+    /* small screen tweaks so nothing gets clipped and interactions are easy */
     @media (max-width: 600px) {
-      .blouse-products {
-        grid-template-columns: 1fr;
-      }
-      .top-bar { padding: 10px 15px; }
-      .logo { font-size: 18px; }
       .nav-bar { display: none; }
       .hamburger { display: block; }
-      .nav-icons { gap: 12px; font-size: 18px; }
-      .modal-content {
-        width: 95%;
-        max-width: 350px;
-      }
+      .modal-content { width: 95%; max-width: 420px; }
+      .modal-image { height: 34vh; min-height: 180px; }
+      .modal-details h2 { font-size: 1.2rem; }
+      .modal-actions { padding: 12px 16px 18px; gap: 10px; }
     }
-    @media (max-width: 600px) {
-  .modal-content {
-    width: 95%;
-    max-width: 350px;
-    aspect-ratio: 4/5;
-  }
-}
-* {
-  box-sizing: border-box;
-  max-width: 100%;
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  inset: 0;
-  width: 100%;   /* instead of 100vw */
-  height: 100%;  /* instead of 110vh */
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-body {
-  margin: 0;
-  font-family: 'Georgia', serif;
-  overflow-x: hidden;
-  background: #fafafa;
-  color: #333;
-}
-.modal-details {
-  text-align: center;
-  margin-bottom: 16px;
-}
 
-.modal-details h2 {
-  margin: 8px 0;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #df567c;
-}
-
-.modal-details .price {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 6px 0;
-  color: #222;
-}
-
-.modal-details .description {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 8px 0 12px;
-}
-
-.modal-qty {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-/* Image carousel wrapper */
-.modal-image {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-}
-
-/* Flex container for images */
-.modal-image .image-track {
-  display: flex;
-  transition: transform 0.4s ease-in-out;
-}
-
-/* Each image */
-.modal-image img {
-  min-width: 100%;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-/* Navigation arrows */
-/* Navigation arrows */
-.modal-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;       /* remove background */
-  border: none;
-  font-size: 2rem;        /* bigger arrow */
-  cursor: pointer;
-  color: #fff;            /* white arrow, visible on images */
-  padding: 0;
-  line-height: 1;
-  transition: color 0.2s;
-  z-index: 2;
-}
-.modal-arrow:hover {
-  color: #df567c;         /* pink hover */
-}
-
-.modal-arrow.left { left: 10px; }
-.modal-arrow.right { right: 10px; }
-
-.cart-notification {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #fff;
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 15px 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  display: none;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
-}
-.cart-notification p { margin: 0 0 10px; font-weight: bold; }
-.cart-notification button {
-  background: #df567c;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-@keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
-
-
-
+    /* utility for cart notification (unchanged) */
+    .cart-notification {
+      position: fixed; bottom: 20px; right: 20px; background: #fff; color: #333; border: 1px solid #ddd; padding: 15px 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 10000;
+    }
+    .cart-notification p { margin: 0 0 10px; font-weight: bold; }
+    .cart-notification button { background: #df567c; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
 
   </style>
 </head>
@@ -434,7 +250,7 @@ body {
     <a href="sale.html">Sale</a>
     <a href="contact.html">Contact Us</a>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" style="display:none;">
     <a href="index.html">Home</a>
     <a href="blouse.htm">Blouses</a>
     <a href="about.html">About Us</a>
@@ -452,228 +268,258 @@ body {
   </section>
 
   <!-- Products -->
- <!-- Products -->
-<section class="blouse-products" id="blouseProducts">
+  <section class="blouse-products" id="blouseProducts">
 
-  <div class="product"
-data-name="luxurious red raw silk blouse"
-data-price="n/a"
-data-description="Crafted in luxurious red raw silk, this blouse is embroidered in white thread with detailed work across the body. The heavily embroidered sleeves draw special attention, while latkans at the back add a touch of elegance, making it an ideal choice for Durga Puja."
-data-images="Project 337/blouses/mdl1.jpg,Project 337/blouses/mdl3.jpg,Project 337/blouses/mdl2.jpg">
-<img src="Project 337/blouses/mdl1.jpg" alt="Embroidered Blouse">
-<p>luxurious red raw silk blouse </p>
-</div>
+    <div class="product"
+      data-name="luxurious red raw silk blouse"
+      data-price="3699"
+      data-description="Crafted in luxurious red raw silk, this blouse is embroidered in white thread with detailed work across the body. The heavily embroidered sleeves draw special attention, while latkans at the back add a touch of elegance, making it an ideal choice for Durga Puja."
+      data-images="Project 337/blouses/mdl1.jpg,Project 337/blouses/mdl3.jpg,Project 337/blouses/mdl2.jpg">
+      <img src="Project 337/blouses/mdl1.jpg" alt="Embroidered Blouse">
+      <p>luxurious red raw silk blouse </p>
+    </div>
 
-<div class="product"
-data-name="Radiant yellow raw silk blouse"
-data-price="n/a"
-data-description="Radiant yellow raw silk blouse designed with a deep paan-shaped neckline in the front and a graceful deep-cut back, finished with delicate latkans that add a touch of traditional charm. The blouse is tailored to bring out both elegance and boldness, making it a versatile festive piece."
-data-images="Project 337/blouses/mdl4.jpg,Project 337/blouses/mdl5.jpg,Project 337/blouses/mdl6.jpg">
-<img src="Project 337/blouses/mdl4.jpg" alt="Embroidered Blouse">
-<p>Radiant yellow raw silk blouse </p>
-</div>
+    <div class="product"
+      data-name="Radiant yellow raw silk blouse"
+      data-price="2249"
+      data-description="Radiant yellow raw silk blouse designed with a deep paan-shaped neckline in the front and a graceful deep-cut back, finished with delicate latkans that add a touch of traditional charm. The blouse is tailored to bring out both elegance and boldness, making it a versatile festive piece."
+      data-images="Project 337/blouses/mdl4.jpg,Project 337/blouses/mdl5.jpg,Project 337/blouses/mdl6.jpg">
+      <img src="Project 337/blouses/mdl4.jpg" alt="Embroidered Blouse">
+      <p>Radiant yellow raw silk blouse </p>
+    </div>
 
-<div class="product"
-data-name="Regal purple raw silk blouse"
-data-price="n/a"
-data-description="A regal purple raw silk blouse, intricately hand-embroidered with detailed craftsmanship. The sleeves are richly adorned with elaborate embroidery, while the front and back neckline feature delicate handwork. Finished with graceful latkans, this blouse is a true statement of elegance and traditional artistry."
-data-images="Project 337/blouses/mdl8.jpg,Project 337/blouses/mdl7.jpg,Project 337/blouses/mdl9.jpg">
-<img src="Project 337/blouses/mdl8.jpg" alt="Embroidered Blouse">
-<p>Regal purple raw silk blouse </p>
-</div>
+    <div class="product"
+      data-name="Regal purple raw silk blouse"
+      data-price="5299"
+      data-description="A regal purple raw silk blouse, intricately hand-embroidered with detailed craftsmanship. The sleeves are richly adorned with elaborate embroidery, while the front and back neckline feature delicate handwork. Finished with graceful latkans, this blouse is a true statement of elegance and traditional artistry."
+      data-images="Project 337/blouses/mdl8.jpg,Project 337/blouses/mdl7.jpg,Project 337/blouses/mdl9.jpg">
+      <img src="Project 337/blouses/mdl8.jpg" alt="Embroidered Blouse">
+      <p>Regal purple raw silk blouse </p>
+    </div>
 
+    <div class="product"
+      data-name="Emerald Green blouse "
+      data-price="3299"
+      data-description="Emerald Green blouse with golden zari embroidery,embroidered sleeves and elegant latkans-an elegant choice for occasion wear."
+      data-images="Project 337/blouses/g1.jpg,Project 337/blouses/g2.jpg,Project 337/blouses/g3.jpg">
+      <img src="Project 337/blouses/g1.jpg" alt="Embroidered Blouse">
+      <p>Emerald Green blouse </p>
+    </div>
 
-  <div class="product"
-       data-name="Emerald Green blouse "
-       data-price="n/a"
-       data-description="Emerald Green blouse with golden zari embroidery,embroidered sleeves and elegant latkans-an elegant choice for occasion wear."
-       data-images="Project 337/blouses/g1.jpg,Project 337/blouses/g2.jpg,Project 337/blouses/g3.jpg">
-    <img src="Project 337/blouses/g1.jpg" alt="Embroidered Blouse">
-    <p>Emerald Green blouse </p>
-  </div>
+    <div class="product"
+      data-name="Dark green embroidered blouse"
+      data-price="3899"
+      data-description="Dark green embroidered blouse featuring intricate front,back,and sleeve embroidery,finished with elegant latkans at the back."
+      data-images="Project 337/blouses/dg3.jpg,Project 337/blouses/dg2.jpg,Project 337/blouses/dg1.jpg">
+      <img src="Project 337/blouses/dg3.jpg" alt="Embroidered Blouse">
+      <p>Dark green embroidered blouse </p>
+    </div>
 
+    <div class="product"
+      data-name="regal royal blue blouse"
+      data-price="4499"
+      data-description="A regal royal blue blouse beautifully adorned with intricate silver zari embroidery on the front,back and sleeves.Finished with elegant Latkans on the back."
+      data-images="Project 337/blouses/b1.jpg,Project 337/blouses/b2.jpg,Project 337/blouses/b3.jpg">
+      <img src="Project 337/blouses/b1.jpg" alt="Embroidered Blouse">
+      <p>Regal royal blue blouse </p>
+    </div>
 
-  <div class="product"
-  data-name="Dark green embroidered blouse"
-  data-price="3899rs"
-  data-description="Dark green embroidered blouse featuring intricate front,back,and sleeve embroidery,finished with elegant latkans at the back."
-  data-images="Project 337/blouses/dg3.jpg,Project 337/blouses/dg2.jpg,Project 337/blouses/dg1.jpg">
-<img src="Project 337/blouses/dg3.jpg" alt="Embroidered Blouse">
-<p>Dark green embroidered blouse </p>
-</div>
+    <div class="product"
+      data-name="Black sleeveless velvet blouse"
+      data-price="3899"
+      data-description="Black sleeveless velvet blouse featuring a graceful V-neckline,adorned with golden zari embroidery along the neck and hemline."
+      data-images="Project 337/blouses/blk2.jpg,Project 337/blouses/blk1.jpg">
+      <img src="Project 337/blouses/blk2.jpg" alt="Embroidered Blouse">
+      <p>Black sleeveless velvet blouse</p>
+    </div>
 
-<div class="product"  
-data-name="regal royal blue blouse"
-data-price="4499rs"
-data-description="A regal royal blue blouse beautifully adorned with intricate silver zari embroidery on the front,back and sleeves.Finished with elegant Latkans on the back."
-data-images="Project 337/blouses/b1.jpg,Project 337/blouses/b2.jpg,Project 337/blouses/b3.jpg">
-<img src="Project 337/blouses/b1.jpg" alt="Embroidered Blouse">
-<p> Regal royal blue blouse </p>
-</div>
+    <div class="product"
+      data-name="Pista green blouse "
+      data-price="3899"
+      data-description="Pista green blouse with fine embroidery on the neckline,complemented by heavy embroidery on the sleeves and back.The look is finished with stylish latkans."
+      data-images="Project 337/blouses/pg3.jpg,Project 337/blouses/pg2.jpg,Project 337/blouses/pg1.jpg">
+      <img src="Project 337/blouses/pg3.jpg" alt="Embroidered Blouse">
+      <p>Pista green blouse  </p>
+    </div>
 
-<div class="product"
-data-name="Black sleeveless velvet blouse"
-data-price="3899rs"
-data-description="Black sleeveless velvet blouse featuring a graceful V-neckline,adorned with golden zari embroidery along the neck and hemline."
-data-images="Project 337/blouses/blk2.jpg,Project 337/blouses/blk1.jpg">
-<img src="Project 337/blouses/blk2.jpg" alt="Embroidered Blouse">
-<p>Black sleeveless velvet blouse</p>
-</div>
- 
-<div class="product"
-data-name="Pista green blouse "
-data-price="3899rs"
-data-description="Pista green blouse with fine embroidery on the neckline,complemented by heavy embroidery on the sleeves and back.The look is finished with stylish latkans."
-data-images="Project 337/blouses/pg3.jpg,Project 337/blouses/pg2.jpg,Project 337/blouses/pg1.jpg">
-<img src="Project 337/blouses/pg3.jpg" alt="Embroidered Blouse">
-<p>Pista green blouse  </p>
-</div>
+    <div class="product"
+      data-name="A striking tomato red blouse"
+      data-price="4199"
+      data-description="A striking tomato red blouse intricately embroidered with white and golden zari.Adorned with delicate floral motifs across the body and sleeves,the design is elevated by a magnificent Maa Durga embroidery on the back."
+      data-images="Project 337/blouses/r1.jpg,Project 337/blouses/r2.jpg,Project 337/blouses/r3.jpg">
+      <img src="Project 337/blouses/r1.jpg" alt="Embroidered Blouse">
+      <p>A striking tomato red blouse </p>
+    </div>
 
-<div class="product"  
-data-name="A striking tomato red blouse"
-data-price="4199rs"
-data-description="A striking tomato red blouse intricately embroidered with white and golden zari.Adorned with delicate floral motifs across the body and sleeves,the design is elevated by a magnificent Maa Durga embroidery on the back."
-data-images="Project 337/blouses/r1.jpg,Project 337/blouses/r2.jpg,Project 337/blouses/r3.jpg">
-<img src="Project 337/blouses/r1.jpg" alt="Embroidered Blouse">
-<p>A striking tomato red blouse </p>
-</div>
+    <div class="product"
+      data-name="A sunshine yellow blouse"
+      data-price="1799"
+      data-description="A sunshine yellow brought to life with multicolour embroidery,celebrating art and tradition.The highlight is a mesmerising Madhubani masterpiece on the back,making it as much a canvas as a blouse."
+      data-images="Project 337/blouses/y2.jpg,Project 337/blouses/y1.jpg">
+      <img src="Project 337/blouses/y2.jpg" alt="Embroidered Blouse">
+      <p>A sunshine yellow blouse </p>
+    </div>
 
-<div class="product"
-data-name="A sunshine yellow blouse"
-data-price="1799rs"
-data-description="A sunshine yellow brought to life with multicolour embroidery,celebrating art and tradition.The highlight is a mesmerising Madhubani masterpiece on the back,making it as much a canvas as a blouse."
-data-images="Project 337/blouses/y2.jpg,Project 337/blouses/y1.jpg">
-<img src="Project 337/blouses/y2.jpg" alt="Embroidered Blouse">
-<p>A sunshine yellow  blouse </p>
-</div>
-  
-
-
-</section>
-
+  </section>
 
   <!-- Modal -->
-  <div class="modal" id="productModal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          
-          <!-- Image -->
-          <div class="modal-image">
-            <button class="modal-arrow left" onclick="changeImage(-1)">&#10094;</button>
-            <div class="image-track" id="modalImage"></div>
-            <button class="modal-arrow right" onclick="changeImage(1)">&#10095;</button>
-          </div>
-          
-          
-          <!-- Details -->
-          <div class="modal-details" id="modalDetails"></div>
-      
-          <!-- Quantity -->
-          <div class="qty-wrapper">
-            <label for="qty">Qty:</label>
-            <input type="number" id="qty" value="1" min="1">
-          </div>
-      
-          <!-- Buttons -->
-          <div class="modal-actions">
-            <button class="add-cart">Add to Cart</button>
-            <button class="buy-now">Buy Now</button>
-          </div>
-        </div>
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <button class="close" aria-label="Close" onclick="closeModal()">&times;</button>
+
+      <div class="modal-image">
+        <button class="modal-arrow left" onclick="changeImage(-1)" aria-label="Prev">&#10094;</button>
+        <div class="image-track" id="modalImage" role="list"></div>
+        <button class="modal-arrow right" onclick="changeImage(1)" aria-label="Next">&#10095;</button>
       </div>
 
-      <div id="cartNotification" class="cart-notification">
-        <p>Product added to cart!</p>
-        <button onclick="window.location.href='cart.html'">View Cart</button>
-      </div>
-      
+      <div class="modal-details" id="modalDetails"></div>
 
-      <script>
-        let currentProductEl = null;
-        let currentImage = 0;
-        
-        document.querySelectorAll(".product").forEach(product => {
-          product.addEventListener("click", function () {
-            currentProductEl = this;
-            currentImage = 0;
-        
-            const name = this.dataset.name;
-            const price = this.dataset.price;
-            const description = this.dataset.description;
-            const images = this.dataset.images.split(",");
-        
-            // Fill modal images
-            const modalImage = document.getElementById("modalImage");
-            modalImage.innerHTML = "";
-            images.forEach(src => {
-              const img = document.createElement("img");
-              img.src = src.trim();
-              modalImage.appendChild(img);
-            });
-        
-            modalImage.style.transform = `translateX(0%)`;
-        
-            // Fill modal details
-            const modalDetails = document.getElementById("modalDetails");
-            modalDetails.innerHTML = `
-              <h2>${name}</h2>
-              <p class="price">₹${price}</p>
-              <p class="description">${description}</p>
-            `;
-        
-            document.getElementById("productModal").style.display = "flex";
-          });
-        });
-        
-        function closeModal() {
-          document.getElementById("productModal").style.display = "none";
-        }
-        
-        function changeImage(dir) {
-          if (!currentProductEl) return;
-          const modalImage = document.getElementById("modalImage");
-          const images = currentProductEl.dataset.images.split(",");
-          const total = images.length;
-        
-          currentImage = (currentImage + dir + total) % total;
-          modalImage.style.transform = `translateX(-${currentImage * 100}%)`;
-        }
-        
-        window.onclick = function(event) {
-          const modal = document.getElementById("productModal");
-          if (event.target === modal) closeModal();
-        };
-        
-        // --- Cart ---
-        function addToCart() {
-          if (!currentProductEl) return;
-          const qty = parseInt(document.getElementById("qty").value) || 1;
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        
-          const product = {
-            name: currentProductEl.dataset.name,
-            price: currentProductEl.dataset.price,
-            description: currentProductEl.dataset.description,
-            image: currentProductEl.dataset.images.split(",")[0], // first image
-            qty: qty
-          };
-        
-          cart.push(product);
-          localStorage.setItem("cart", JSON.stringify(cart));
-        
-          const notif = document.getElementById("cartNotification");
-          notif.style.display = "block";
-          setTimeout(() => { notif.style.display = "none"; }, 3000);
-        }
-        
-        function buyNow() {
-          addToCart();
-          window.location.href = "cart.html";
-        }
-        
-        document.querySelector(".add-cart").onclick = addToCart;
-        document.querySelector(".buy-now").onclick = buyNow;
-        </script>
-        
-</body>         
+      <div class="qty-wrapper">
+        <label for="qty">Qty:</label>
+        <input type="number" id="qty" value="1" min="1">
+      </div>
+
+      <div class="modal-actions">
+        <button class="add-cart">Add to Cart</button>
+        <button class="buy-now">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cartNotification" class="cart-notification">
+    <p>Product added to cart!</p>
+    <button onclick="window.location.href='cart.html'">View Cart</button>
+  </div>
+
+  <script>
+    /* ---------------- modal + gallery JS ---------------- */
+    let currentProductEl = null;
+    let currentImage = 0;
+
+    function openModalForProduct(productEl) {
+      currentProductEl = productEl;
+      currentImage = 0;
+
+      const name = productEl.dataset.name;
+      const price = productEl.dataset.price;
+      const description = productEl.dataset.description;
+      const images = productEl.dataset.images.split(",");
+
+      const modalImage = document.getElementById("modalImage");
+      modalImage.innerHTML = "";
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        img.alt = name;
+        modalImage.appendChild(img);
+      });
+
+      // reset track position
+      modalImage.style.transform = `translateX(0%)`;
+
+      const modalDetails = document.getElementById("modalDetails");
+      modalDetails.innerHTML = `
+        <h2>${name}</h2>
+        <p class="price">₹${price}</p>
+        <p class="description">${description}</p>
+      `;
+
+      // show modal and prevent body scroll
+      const modal = document.getElementById("productModal");
+      modal.style.display = "flex";
+      modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    }
+
+    document.querySelectorAll(".product").forEach(product => {
+      product.addEventListener("click", function () {
+        openModalForProduct(this);
+      });
+    });
+
+    function closeModal() {
+      const modal = document.getElementById("productModal");
+      modal.style.display = "none";
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      currentProductEl = null;
+      currentImage = 0;
+    }
+
+    function changeImage(dir) {
+      if (!currentProductEl) return;
+      const modalImage = document.getElementById("modalImage");
+      const images = currentProductEl.dataset.images.split(",");
+      const total = images.length;
+      currentImage = (currentImage + dir + total) % total;
+      modalImage.style.transform = `translateX(-${currentImage * 100}%)`;
+    }
+
+    // close modal when clicking outside the content
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById("productModal");
+      if (event.target === modal) closeModal();
+    });
+
+    // keyboard support (escape to close, left/right to change)
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById("productModal");
+      if (modal.style.display === 'flex') {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') changeImage(-1);
+        if (e.key === 'ArrowRight') changeImage(1);
+      }
+    });
+
+    /* ---------------- cart functionality (as before) ---------------- */
+    function addToCart() {
+      if (!currentProductEl) return;
+      const qty = parseInt(document.getElementById("qty").value) || 1;
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const product = {
+        name: currentProductEl.dataset.name,
+        price: currentProductEl.dataset.price,
+        description: currentProductEl.dataset.description,
+        image: currentProductEl.dataset.images.split(",")[0],
+        qty: qty
+      };
+
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      const notif = document.getElementById("cartNotification");
+      notif.style.display = "block";
+      setTimeout(() => { notif.style.display = "none"; }, 3000);
+    }
+
+    function buyNow() {
+      addToCart();
+      window.location.href = "cart.html";
+    }
+
+    document.querySelector(".add-cart").onclick = addToCart;
+    document.querySelector(".buy-now").onclick = buyNow;
+
+    /* ---------------- small helpers (nav toggle) ---------------- */
+    function toggleMenu() {
+      const m = document.getElementById("mobileMenu");
+      if (!m) return;
+      m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    /* ---------------- ensure modal images are touch-friendly (preload track width) ---------------- */
+    // When window resizes, ensure the track transform stays correct for currentImage
+    window.addEventListener('resize', () => {
+      const modalImage = document.getElementById("modalImage");
+      if (modalImage && currentImage) {
+        modalImage.style.transform = `translateX(-${currentImage * 100}%)`;
+      }
+    });
+  </script>
+
+</body>
 </html>
